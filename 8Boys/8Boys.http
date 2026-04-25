@@ -1,0 +1,6 @@
+@_8Boys_HostAddress = http://localhost:5235
+
+GET {{_8Boys_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
