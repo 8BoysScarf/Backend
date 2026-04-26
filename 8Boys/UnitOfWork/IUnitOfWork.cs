@@ -11,6 +11,9 @@ namespace _8Boys
         IGenericRepository<Color> Colors { get; }
         IGenericRepository<Badge> Badges { get; }
         IGenericRepository<ProductVariant> ProductVariants { get; }
+        ICartRepository Carts { get; }
+        IGenericRepository<CartItem> CartItems { get; }
+        IGenericRepository<Address> Addresses { get; }
 
         int SaveChanges();
         Task<int> SaveChangesAsync();

@@ -15,6 +15,9 @@ namespace _8Boys
         public IGenericRepository<Color> Colors { get; }
         public IGenericRepository<Badge> Badges { get; }
         public IGenericRepository<ProductVariant> ProductVariants { get; }
+        public ICartRepository Carts { get; }
+        public IGenericRepository<CartItem> CartItems { get; }
+        public IGenericRepository<Address> Addresses { get; }
 
         public UnitOfWork(
             _8BoysContext context,
@@ -23,7 +26,10 @@ namespace _8Boys
             IGenericRepository<Category> categories,
             IGenericRepository<Color> colors,
             IGenericRepository<Badge> badges,
-            IGenericRepository<ProductVariant> productVariants
+            IGenericRepository<ProductVariant> productVariants,
+            ICartRepository cartRepository,
+            IGenericRepository<CartItem> cartItems,
+            IGenericRepository<Address> addresses
             )
         {
             _context = context;
@@ -34,6 +40,9 @@ namespace _8Boys
             Colors = colors;
             Badges = badges;
             ProductVariants = productVariants;
+            Carts = cartRepository;
+            CartItems = cartItems;
+            Addresses = addresses;
         }
 
         public int SaveChanges()

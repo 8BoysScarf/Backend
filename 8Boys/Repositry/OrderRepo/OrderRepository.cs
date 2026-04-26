@@ -13,7 +13,11 @@ namespace _8Boys.Repositry
         {
             return await _db.Orders
                 .Include(o => o.Items)
-                .ThenInclude(i => i.ProductVariant)
+                    .ThenInclude(i => i.ProductVariant)
+                        .ThenInclude(v => v.Product)
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.ProductVariant)
+                        .ThenInclude(v => v.Images)
                 .FirstOrDefaultAsync(o => o.Id == id);
         }
 

@@ -6,6 +6,7 @@
 
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
+        public bool IsDefault { get; set; }
 
         public string City { get; set; }
         public string Street { get; set; }

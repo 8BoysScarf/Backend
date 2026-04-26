@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace _8Boys
 {
@@ -21,7 +22,13 @@ namespace _8Boys
             var builder = WebApplication.CreateBuilder(args);
 
 
-            builder.Services.AddControllers();
+            // configure controllers and JSON options to avoid object cycle serialization errors
+            builder.Services.AddControllers()
+                .AddJsonOptions(opts =>
+                {
+                    opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                    opts.JsonSerializerOptions.MaxDepth = 64;
+                });
 
             // Use project's existing OpenAPI helper
             builder.Services.AddOpenApi();
@@ -32,7 +39,6 @@ namespace _8Boys
             // ================= Cloudinary =================
             builder.Services.Configure<CloudinarySettings>(
                 builder.Configuration.GetSection("Cloudinary"));
-
 
             builder.Services.AddSingleton(provider =>
             {
@@ -47,6 +53,7 @@ namespace _8Boys
 
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+            builder.Services.AddScoped<ICartRepository, CartRepository>();
             // Register generic repository implementation
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
@@ -54,6 +61,9 @@ namespace _8Boys
             builder.Services.AddScoped<ProductService>();
             builder.Services.AddScoped<ProductVariantService>();
             builder.Services.AddScoped<ProductImageService>();
+            builder.Services.AddScoped<CartService>();
+            builder.Services.AddScoped<AddressService>();
+            builder.Services.AddScoped<OrderService>();
             builder.Services.AddScoped<ColorService>();
             builder.Services.AddScoped<BadgeService>();
             builder.Services.AddScoped<CategoryService>();
@@ -104,7 +114,6 @@ namespace _8Boys
 
             var app = builder.Build();
 
-            
 
             if (app.Environment.IsDevelopment())
             {

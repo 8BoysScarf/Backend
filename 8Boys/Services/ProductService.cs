@@ -46,7 +46,12 @@ namespace _8Boys.Services
                     Price = p.Variants.OrderBy(v => v.Price).Select(v => v.Price).FirstOrDefault(),
                     ThumbnailUrl = p.Variants.SelectMany(v => v.Images).Select(i => i.ImageUrl).FirstOrDefault(),
                     Badges = p.ProductBadges.Select(pb => pb.Badge.Name),
-                    StockQuantity = p.Variants.OrderBy(v => v.Price).Select(v => v.StockQuantity).FirstOrDefault()
+                    StockQuantity = p.Variants.OrderBy(v => v.Price).Select(v => v.StockQuantity).FirstOrDefault(),
+                    Code = p.Variants.OrderBy(v => v.Price).Select(v => v.Code).FirstOrDefault(),
+                    Discount = p.Variants.OrderBy(v => v.Price).Select(v => v.Discount).FirstOrDefault(),
+                    Size = p.Variants.OrderBy(v => v.Price).Select(v => v.Size).FirstOrDefault(),
+                    HexCode = p.Variants.OrderBy(v => v.Price).Select(v => v.Color != null ? v.Color.HexCode : null).FirstOrDefault()
+
                 })
                 .ToListAsync();
 
