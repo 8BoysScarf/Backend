@@ -14,6 +14,8 @@ namespace _8Boys
         ICartRepository Carts { get; }
         IGenericRepository<CartItem> CartItems { get; }
         IGenericRepository<Address> Addresses { get; }
+        IGenericRepository<Wishlist> Wishlists { get; }
+        IGenericRepository<WishlistItem> WishlistItems { get; }
 
         int SaveChanges();
         Task<int> SaveChangesAsync();

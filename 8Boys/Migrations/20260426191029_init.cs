@@ -32,7 +32,7 @@ namespace _8Boys.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ProfilePictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -129,6 +129,7 @@ namespace _8Boys.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IsDefault = table.Column<bool>(type: "bit", nullable: false),
                     City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Street = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
                 },
@@ -274,7 +275,6 @@ namespace _8Boys.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -341,26 +341,6 @@ namespace _8Boys.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductImage",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductImage", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductImage_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ProductVariants",
                 columns: table => new
                 {
@@ -369,8 +349,11 @@ namespace _8Boys.Migrations
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     ColorId = table.Column<int>(type: "int", nullable: true),
                     Size = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    RealPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    StockQuantity = table.Column<int>(type: "int", nullable: false)
+                    Discount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    StockQuantity = table.Column<int>(type: "int", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -542,6 +525,26 @@ namespace _8Boys.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ProductImage",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductVariantId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductImage", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductImage_ProductVariants_ProductVariantId",
+                        column: x => x.ProductVariantId,
+                        principalTable: "ProductVariants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
@@ -647,14 +650,20 @@ namespace _8Boys.Migrations
                 column: "BadgeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductImage_ProductId",
+                name: "IX_ProductImage_ProductVariantId",
                 table: "ProductImage",
-                column: "ProductId");
+                column: "ProductVariantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductVariants_Code",
+                table: "ProductVariants",
+                column: "Code",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductVariants_ColorId",
@@ -752,10 +761,10 @@ namespace _8Boys.Migrations
                 name: "Carts");
 
             migrationBuilder.DropTable(
-                name: "ProductVariants");
+                name: "Badge");
 
             migrationBuilder.DropTable(
-                name: "Badge");
+                name: "ProductVariants");
 
             migrationBuilder.DropTable(
                 name: "Orders");

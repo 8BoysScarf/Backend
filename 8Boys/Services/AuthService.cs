@@ -62,7 +62,7 @@ namespace _8Boys.Services
             }
 
             // assign default role
-            await _userManager.AddToRoleAsync(user, "Admin");
+            await _userManager.AddToRoleAsync(user, "Customer");
 
             // generate token
             var token = await GenerateTokenAsync(user);

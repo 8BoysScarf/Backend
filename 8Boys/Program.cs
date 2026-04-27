@@ -40,6 +40,7 @@ namespace _8Boys
             builder.Services.Configure<CloudinarySettings>(
                 builder.Configuration.GetSection("Cloudinary"));
 
+
             builder.Services.AddSingleton(provider =>
             {
                 var config = provider.GetRequiredService<IOptions<CloudinarySettings>>().Value;
@@ -64,6 +65,7 @@ namespace _8Boys
             builder.Services.AddScoped<CartService>();
             builder.Services.AddScoped<AddressService>();
             builder.Services.AddScoped<OrderService>();
+            builder.Services.AddScoped<WishlistService>();
             builder.Services.AddScoped<ColorService>();
             builder.Services.AddScoped<BadgeService>();
             builder.Services.AddScoped<CategoryService>();

@@ -12,8 +12,8 @@ using _8Boys.Context;
 namespace _8Boys.Migrations
 {
     [DbContext(typeof(_8BoysContext))]
-    [Migration("20260426145007_addressupdate")]
-    partial class addressupdate
+    [Migration("20260426191029_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
