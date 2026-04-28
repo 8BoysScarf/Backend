@@ -1,4 +1,5 @@
 using _8Boys.DTOs;
+using _8Boys.Models;
 using _8Boys.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,10 +32,10 @@ namespace _8Boys.Controllers
         [Authorize]
         public async Task<IActionResult> GetDetails(int id)
         {
-            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+            //var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            //if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-            var details = await _orderService.GetOrderDetailsAsync(id, userId);
+            var details = await _orderService.GetOrderDetailsAsync(id);
             if (details == null) return NotFound();
             return Ok(details);
         }
@@ -48,6 +49,24 @@ namespace _8Boys.Controllers
 
             var orders = await _orderService.GetUserOrdersAsync(userId);
             return Ok(orders);
+        }
+
+        // admin endpoints
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 20, [FromQuery] decimal? minPrice = null, [FromQuery] decimal? maxPrice = null, [FromQuery] OrderStatus? status = null)
+        {
+            var result = await _orderService.GetAllOrdersAsync(page, pageSize, minPrice, maxPrice, status);
+            return Ok(result);
+        }
+
+        [HttpPut("{id}/status")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateStatus(int id, [FromBody] OrderStatus status)
+        {
+            var ok = await _orderService.UpdateOrderStatusAsync(id, status);
+            if (!ok) return NotFound();
+            return NoContent();
         }
     }
 }

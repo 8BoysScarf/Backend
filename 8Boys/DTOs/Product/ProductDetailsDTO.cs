@@ -10,6 +10,7 @@ namespace _8Boys.DTOs
         public string CategoryName { get; set; }
         public IEnumerable<ProductVariantDTO> Variants { get; set; }
         public IEnumerable<string> Badges { get; set; }
+        public IEnumerable<ReviewDTO> Reviews { get; set; }
     }
 
     public class ProductVariantDTO
@@ -25,5 +26,16 @@ namespace _8Boys.DTOs
         public int StockQuantity { get; set; }
         public string Code { get; set; }
         public IEnumerable<string> ImageUrls { get; set; }
+    }
+
+    public class ReviewDTO
+    {
+        public int Id { get; set; }
+        public string UserId { get; set; }
+        public string UserPhotoUrl { get; set; }
+        public string UserName { get; set; }
+        public int Rating { get; set; }
+        public string Comment { get; set; }
+
     }
 }

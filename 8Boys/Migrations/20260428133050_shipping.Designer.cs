@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using _8Boys.Context;
 
@@ -11,9 +12,11 @@ using _8Boys.Context;
 namespace _8Boys.Migrations
 {
     [DbContext(typeof(_8BoysContext))]
-    partial class _8BoysContextModelSnapshot : ModelSnapshot
+    [Migration("20260428133050_shipping")]
+    partial class shipping
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -449,9 +452,6 @@ namespace _8Boys.Migrations
 
                     b.Property<int>("AddressId")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("ShippingPrice")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Status")
                         .HasMaxLength(50)

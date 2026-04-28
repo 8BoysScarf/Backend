@@ -66,6 +66,9 @@ namespace _8Boys
             builder.Services.AddScoped<AddressService>();
             builder.Services.AddScoped<OrderService>();
             builder.Services.AddScoped<WishlistService>();
+            builder.Services.AddScoped<ReviewService>();
+            builder.Services.AddScoped<ShippingService>();
+            builder.Services.AddScoped<WishlistService>();
             builder.Services.AddScoped<ColorService>();
             builder.Services.AddScoped<BadgeService>();
             builder.Services.AddScoped<CategoryService>();

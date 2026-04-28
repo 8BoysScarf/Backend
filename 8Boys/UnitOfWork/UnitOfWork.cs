@@ -20,6 +20,9 @@ namespace _8Boys
         public IGenericRepository<Address> Addresses { get; }
         public IGenericRepository<Wishlist> Wishlists { get; }
         public IGenericRepository<WishlistItem> WishlistItems { get; }
+        public IGenericRepository<Review> Reviews { get; }
+        public IGenericRepository<Shipping> Shippings { get; }
+        public IGenericRepository<CityShipping> CityShippings { get; }
 
         public UnitOfWork(
             _8BoysContext context,
@@ -33,7 +36,10 @@ namespace _8Boys
             IGenericRepository<CartItem> cartItems,
             IGenericRepository<Address> addresses,
             IGenericRepository<Wishlist> wishlists,
-            IGenericRepository<WishlistItem> wishlistItems
+            IGenericRepository<WishlistItem> wishlistItems,
+            IGenericRepository<Review> reviews,
+            IGenericRepository<Shipping> shippings,
+            IGenericRepository<CityShipping> cityShippings
             )
         {
             _context = context;
@@ -49,6 +55,9 @@ namespace _8Boys
             Addresses = addresses;
             Wishlists = wishlists;
             WishlistItems = wishlistItems;
+            Reviews = reviews;
+            Shippings = shippings;
+            CityShippings = cityShippings;
         }
 
         public int SaveChanges()

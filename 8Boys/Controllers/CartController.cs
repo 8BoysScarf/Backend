@@ -24,8 +24,8 @@ namespace _8Boys.Controllers
             var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-            var cart = await _cartService.GetCartAsync(userId);
-            return Ok(cart);
+            var items = await _cartService.GetCartItemsDtoAsync(userId);
+            return Ok(items);
         }
 
         [HttpPost("items")]

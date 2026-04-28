@@ -16,6 +16,9 @@ namespace _8Boys
         IGenericRepository<Address> Addresses { get; }
         IGenericRepository<Wishlist> Wishlists { get; }
         IGenericRepository<WishlistItem> WishlistItems { get; }
+        IGenericRepository<Review> Reviews { get; }
+        IGenericRepository<Shipping> Shippings { get; }
+        IGenericRepository<CityShipping> CityShippings { get; }
 
         int SaveChanges();
         Task<int> SaveChangesAsync();

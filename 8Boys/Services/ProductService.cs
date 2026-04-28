@@ -226,12 +226,16 @@ namespace _8Boys.Services
                 {
                     Id = p.Id,
                     Name = p.Name,
-                    Code = p.Variants.OrderBy(v => v.Price).Select(v => v.Code).FirstOrDefault(),
                     CategoryName = p.Category.Name,
                     Price = p.Variants.OrderBy(v => v.Price).Select(v => v.Price).FirstOrDefault(),
                     ThumbnailUrl = p.Variants.SelectMany(v => v.Images).Select(i => i.ImageUrl).FirstOrDefault(),
                     Badges = p.ProductBadges.Select(pb => pb.Badge.Name),
-                    StockQuantity = p.Variants.OrderBy(v => v.Price).Select(v => v.StockQuantity).FirstOrDefault()
+                    StockQuantity = p.Variants.OrderBy(v => v.Price).Select(v => v.StockQuantity).FirstOrDefault(),
+                    Code = p.Variants.OrderBy(v => v.Price).Select(v => v.Code).FirstOrDefault(),
+                    Discount = p.Variants.OrderBy(v => v.Price).Select(v => v.Discount).FirstOrDefault(),
+                    Size = p.Variants.OrderBy(v => v.Price).Select(v => v.Size).FirstOrDefault(),
+                    HexCode = p.Variants.OrderBy(v => v.Price).Select(v => v.Color != null ? v.Color.HexCode : null).FirstOrDefault()
+
                 })
                 .ToListAsync();
 
@@ -273,6 +277,15 @@ namespace _8Boys.Services
                     StockQuantity = v.StockQuantity,
                     Code = v.Code,
                     ImageUrls = v.Images.Select(i => i.ImageUrl)
+                }),
+                Reviews = p.Reviews.Select(r => new ReviewDTO
+                {
+                    Id = r.Id,
+                    UserId = r.UserId,
+                    UserName = r.User != null ? r.User.Name : null,
+                    UserPhotoUrl = r.User != null ? r.User.ProfilePictureUrl : null,
+                    Rating = r.Rating,
+                    Comment = r.Comment
                 })
             };
         }

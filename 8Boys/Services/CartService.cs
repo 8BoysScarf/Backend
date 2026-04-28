@@ -1,5 +1,7 @@
 using _8Boys.Models;
 using _8Boys.Repositry;
+using Microsoft.EntityFrameworkCore;
+using _8Boys.DTOs;
 
 namespace _8Boys.Services
 {
@@ -61,6 +63,46 @@ namespace _8Boys.Services
             return await _unitOfWork.Carts.GetUserCartAsync(userId);
         }
 
+        public async Task<IEnumerable<CartItemDTO>> GetCartItemsDtoAsync(string userId)
+        {
+            var cart = await _unitOfWork.Carts.GetUserCartAsync(userId);
+            if (cart == null) return Enumerable.Empty<CartItemDTO>();
+
+            // Ensure product variant and product are loaded
+            await _unitOfWork.Carts.Query()
+                .Where(c => c.Id == cart.Id)
+                .Include(c => c.Items)
+                    .ThenInclude(i => i.ProductVariant)
+                        .ThenInclude(v => v.Product)
+                .Include(c => c.Items)
+                    .ThenInclude(i => i.ProductVariant)
+                        .ThenInclude(v => v.Images)
+                .Include(c => c.Items)
+                    .ThenInclude(i => i.ProductVariant)
+                        .ThenInclude(v => v.Color)
+                .FirstOrDefaultAsync();
+
+            var list = cart.Items.Select(i => new CartItemDTO
+            {
+                Id = i.Id,
+                ProductVariantId = i.ProductVariantId,
+                Quantity = i.Quantity,
+                Code = i.ProductVariant?.Code,
+                Size = i.ProductVariant?.Size,
+                Price = i.ProductVariant?.Price ?? 0,
+                Thumbnail = i.ProductVariant?.Images?.FirstOrDefault()?.ImageUrl,
+                ProductId = i.ProductVariant?.ProductId ?? 0,
+                ProductName = i.ProductVariant?.Product?.Name,
+                ColorName = i.ProductVariant?.Color?.Name,
+                ColorHex = i.ProductVariant?.Color?.HexCode,
+                Discount = i.ProductVariant?.Discount,
+                RealPrice = i.ProductVariant?.RealPrice ?? 0,
+                StockQuantity = i.ProductVariant?.StockQuantity ?? 0
+            });
+
+            return list;
+        }
+
         public async Task<int> CheckoutAsync(string userId, int addressId)
         {
             var cart = await _unitOfWork.Carts.GetUserCartAsync(userId);
@@ -71,7 +113,7 @@ namespace _8Boys.Services
             {
                 UserId = userId,
                 AddressId = addressId,
-                Status = "Pending",
+                Status = OrderStatus.Pending,
                 Items = new List<OrderItem>()
             };
 

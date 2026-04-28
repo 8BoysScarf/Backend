@@ -20,6 +20,7 @@ namespace _8Boys.Repositry
                     .ThenInclude(pb => pb.Badge)
                 .Include(p => p.Category)
                 .Include(p => p.Reviews)
+                    .ThenInclude(r => r.User)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 

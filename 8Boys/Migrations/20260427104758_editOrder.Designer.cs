@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using _8Boys.Context;
 
@@ -11,9 +12,11 @@ using _8Boys.Context;
 namespace _8Boys.Migrations
 {
     [DbContext(typeof(_8BoysContext))]
-    partial class _8BoysContextModelSnapshot : ModelSnapshot
+    [Migration("20260427104758_editOrder")]
+    partial class editOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -361,30 +364,6 @@ namespace _8Boys.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("_8Boys.Models.CityShipping", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("City")
-                        .IsUnique();
-
-                    b.ToTable("CityShippings");
-                });
-
             modelBuilder.Entity("_8Boys.Models.Color", b =>
                 {
                     b.Property<int>("Id")
@@ -449,9 +428,6 @@ namespace _8Boys.Migrations
 
                     b.Property<int>("AddressId")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("ShippingPrice")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Status")
                         .HasMaxLength(50)
